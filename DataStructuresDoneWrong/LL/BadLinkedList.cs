@@ -132,6 +132,13 @@ namespace DataStructuresDoneWrong.LL {
         /// </summary>
         /// <returns></returns>
         T[] ToArray();
+        
+        /// <summary>
+        /// True if list is empty, false if not
+        /// </summary>
+        bool IsEmpty {
+            get;
+        }
 
         /// <summary>
         /// Size of list
