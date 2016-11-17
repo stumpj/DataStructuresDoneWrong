@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DataStructuresDoneWrong {
-    class Program {
+    class Launchpad {
         static void Main(string[] args) {
             //nothing
         }
