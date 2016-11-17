@@ -9,7 +9,7 @@ namespace DataStructuresDoneWrong.LL {
     /// <summary>
     /// LinkedList Interface
     /// </summary>
-    public interface BadLinkedList<T> {
+    public interface BadLinkedList<T> : ICloneable where T : IEquatable<T>, ICloneable {
 
         /// <summary>
         /// Add at a position in list.
@@ -38,12 +38,6 @@ namespace DataStructuresDoneWrong.LL {
         /// Remove all elements
         /// </summary>
         void Clear();
-
-        /// <summary>
-        /// Creates a shallow copy of the list
-        /// </summary>
-        /// <returns></returns>
-        T Clone();
 
         /// <summary>
         /// Checks if list contains a value. Returns true if value in list. False if not.
