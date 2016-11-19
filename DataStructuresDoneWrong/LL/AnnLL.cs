@@ -161,7 +161,7 @@ namespace DataStructuresDoneWrong.LL
             if (this.IsEmpty)
                 return -1;
             bool found = false;
-            int index = 0;
+            int index = -1;
             Node tempNode = Head;
 
             while (!found && tempNode.NextNode != null) 
@@ -182,7 +182,7 @@ namespace DataStructuresDoneWrong.LL
         public int LastIndexOf(T value)
         {
             bool found = false;
-            int index = LLSize - 1;
+            int index = LLSize;
             Node tempNode = Tail;
 
             while (!found && tempNode != null)
@@ -196,16 +196,15 @@ namespace DataStructuresDoneWrong.LL
 
                 tempNode = tempNode.PreviousNode;
             }
-
             if (!found)
-                index = -1;
+                return -1;
             return index;
         }
 
         public bool Remove(T value)
         {
-            int index = LastIndexOf(value);
-            if (index != -1 && ValidExistingIndex(index)) //just in case I am dumb 
+            int index = IndexOf(value);
+            if (index != -1) //just in case I am dumb 
             {
                 Remove(index);
                 return true;
@@ -243,7 +242,7 @@ namespace DataStructuresDoneWrong.LL
 
         public T RemoveFirst()
         {
-            if (LLSize < 1)
+            if (this.IsEmpty)
             {
                 throw (new Exception("Linked List is Empty sad"));
             }
@@ -256,7 +255,7 @@ namespace DataStructuresDoneWrong.LL
 
         public T RemoveLast()
         {
-            if (LLSize < 1)
+            if (this.IsEmpty)
             {
                 throw (new Exception("Linked List is Empty sad"));
             }
