@@ -97,13 +97,14 @@ namespace DataStructuresDoneWrong.LL
 
         public object Clone()
         {
-            AnnLL<T> Dolly = new AnnLL<T>();
-            Dolly.LLSize = this.LLSize;
+            AnnLL<T> Dolly = new AnnLL<T>();           
 
             for (int i = 0; i < this.LLSize; i++)
             {
-                no-op; 
+                Dolly.Add((T)this.Get(i).Clone());
             }
+
+            Dolly.LLSize = this.LLSize;
             return Dolly;
         }
 
@@ -126,9 +127,9 @@ namespace DataStructuresDoneWrong.LL
         public T Get(int index)
         {
             int i;
-            if (index < 0 && index > LLSize - 1)
+            if (!ValidIndex(index))
             {
-                throw (new Exception("Invalid index "));
+                throw (new Exception("Invalid index"));
             }
             Node tempNode = Head;
             for (i = 0; i < index; i++)
@@ -196,8 +197,8 @@ namespace DataStructuresDoneWrong.LL
 
         public bool Remove(T value)
         {
-            int index = this.LastIndexOf(value);
-            if (index != -1 && ValidIndex(index))
+            int index = LastIndexOf(value);
+            if (index != -1 && ValidIndex(index)) //just in case I am dumb 
             {
                 Remove(index);
                 return true;
@@ -278,7 +279,7 @@ namespace DataStructuresDoneWrong.LL
 
         public T[] ToArray()
         {
-            T tempArray[LLSize];
+            T tempArray[LLSize]; //NO IDEA HOW TO DECLARE ARRAY in c#
              
         }
 
