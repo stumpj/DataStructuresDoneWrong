@@ -57,7 +57,7 @@ namespace DataStructuresDoneWrong.LL
 
         public bool Add(int index, T value)
         {
-            if (index < 0 && index > LLSize - 1)
+            if (index < 0 || index > LLSize)
                 return false;
 
             if (index == 0)
@@ -284,7 +284,7 @@ namespace DataStructuresDoneWrong.LL
 
         private bool ValidIndex(int index)
         {
-            if (index < 0 && index > LLSize - 1)
+            if (index < 0 || index > LLSize - 1)
                 return false;
             else
                 return true;
