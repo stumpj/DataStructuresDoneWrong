@@ -62,10 +62,12 @@ namespace DataStructuresDoneWrong.LL
 
             if (index == 0)
                 AddFirst(value);
-            else if (index == LLSize - 1)
+            else if (index == LLSize)
                 Add(value);
             else
             {
+
+                //todo: if index >= LLSize/2, start from tail, else start from head
                 Node tempNode = Head;
 
                 for (int i = 0; i < index; i++)
@@ -75,6 +77,7 @@ namespace DataStructuresDoneWrong.LL
                 tempNode.PreviousNode.NextNode = new Node(value, tempNode.PreviousNode, tempNode);
                 tempNode.PreviousNode = tempNode.PreviousNode.NextNode;
             }
+
             LLSize++;
             return true;
         }
@@ -110,6 +113,8 @@ namespace DataStructuresDoneWrong.LL
 
         public bool Contains(T value)
         {
+            if (this.IsEmpty)
+                return false;
             bool found = false;
             Node tempNode = Head;
             while (!found && tempNode.NextNode != null) 
@@ -127,10 +132,11 @@ namespace DataStructuresDoneWrong.LL
         public T Get(int index)
         {
             int i;
-            if (!ValidIndex(index))
+            if (!ValidExistingIndex(index))
             {
                 throw (new Exception("Invalid index"));
             }
+
             Node tempNode = Head;
             for (i = 0; i < index; i++)
             {
@@ -152,6 +158,8 @@ namespace DataStructuresDoneWrong.LL
 
         public int IndexOf(T value)
         {
+            if (this.IsEmpty)
+                return -1;
             bool found = false;
             int index = 0;
             Node tempNode = Head;
@@ -163,7 +171,6 @@ namespace DataStructuresDoneWrong.LL
                     found = true;    
                 }
                 index++;
-
                 tempNode = tempNode.NextNode;
             }
 
@@ -198,7 +205,7 @@ namespace DataStructuresDoneWrong.LL
         public bool Remove(T value)
         {
             int index = LastIndexOf(value);
-            if (index != -1 && ValidIndex(index)) //just in case I am dumb 
+            if (index != -1 && ValidExistingIndex(index)) //just in case I am dumb 
             {
                 Remove(index);
                 return true;
@@ -208,7 +215,7 @@ namespace DataStructuresDoneWrong.LL
 
         public T Remove(int index)
         {
-            if (!ValidIndex(index))
+            if (!ValidExistingIndex(index))
             {
                 throw (new Exception("Invalid index "));
             }
@@ -263,7 +270,7 @@ namespace DataStructuresDoneWrong.LL
 
         public T Set(int index, T value)
         {
-            if (!ValidIndex(index))
+            if (!ValidExistingIndex(index))
             {
                 throw (new Exception("Invalid index "));
             }
@@ -283,7 +290,7 @@ namespace DataStructuresDoneWrong.LL
              
         }
 
-        private bool ValidIndex(int index)
+        private bool ValidExistingIndex(int index)
         {
             if (index < 0 || index > LLSize - 1)
                 return false;
