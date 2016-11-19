@@ -117,7 +117,7 @@ namespace DataStructuresDoneWrong.LL
                 return false;
             bool found = false;
             Node tempNode = Head;
-            while (!found && tempNode.NextNode != null) 
+            while (!found && tempNode != null) 
             {
                 if (tempNode.NodeValue.Equals(value))
                 {
@@ -185,7 +185,7 @@ namespace DataStructuresDoneWrong.LL
             int index = LLSize - 1;
             Node tempNode = Tail;
 
-            while (!found && tempNode.PreviousNode != null)
+            while (!found && tempNode != null)
             {
 
                 if (tempNode.NodeValue.Equals(value))
