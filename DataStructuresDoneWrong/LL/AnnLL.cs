@@ -285,6 +285,7 @@ namespace DataStructuresDoneWrong.LL
 
         public T[] ToArray()
         {
+            //todo: figure out how to declare an array in C#, too lazy right now
             T tempArray[LLSize]; //NO IDEA HOW TO DECLARE ARRAY in c#
              
         }
