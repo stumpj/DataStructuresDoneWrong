@@ -19,9 +19,9 @@ namespace DataStructuresDoneWrong.LL.Tests {
 
         public LLTests() {
             // Change to "new YourClassLL<string>();" in order to test your code
-            LL = new JimLL<string>();
+            LL = new AnnLL<string>();
             // Change to "new YourClassLL<MutableTest>();" in order to test your code
-            LLM = new JimLL<MutableTest>();
+            LLM = new AnnLL<MutableTest>();
         }
 
         [TestMethod()]
@@ -106,6 +106,7 @@ namespace DataStructuresDoneWrong.LL.Tests {
             Assert.AreEqual(3, LL.IndexOf("three"));
             Assert.AreEqual(5, LL.IndexOf("five"));
             Assert.AreEqual(-1, LL.IndexOf("not in list"));
+            Assert.AreEqual(6, LL.Size);
         }
 
         [TestMethod()]
@@ -122,6 +123,29 @@ namespace DataStructuresDoneWrong.LL.Tests {
             Assert.AreEqual(3, LL.LastIndexOf("three"));
             Assert.AreEqual(5, LL.LastIndexOf("five"));
             Assert.AreEqual(-1, LL.LastIndexOf("not in list"));
+            Assert.AreEqual(6, LL.Size);
+        }
+
+        [TestMethod()]
+        public void IndexOfEmptyTest() {
+            Assert.AreEqual(-1, LL.IndexOf("zero"));
+        }
+
+        [TestMethod()]
+        public void LastIndexOfEmptyTest() {
+            Assert.AreEqual(-1, LL.LastIndexOf("zero"));
+        }
+
+        [TestMethod()]
+        public void AddFirstTest() {
+            LL.AddFirst("two");
+            LL.AddFirst("one");
+            LL.AddFirst("zero");
+
+            Assert.AreEqual("zero", LL.Get(0));
+            Assert.AreEqual("one", LL.Get(1));
+            Assert.AreEqual("two", LL.Get(2));
+            Assert.AreEqual(3, LL.Size);
         }
 
         [TestMethod()]
@@ -208,6 +232,24 @@ namespace DataStructuresDoneWrong.LL.Tests {
         }
 
         [TestMethod()]
+        public void AddAtZeroIndexTest() {
+            LL.Add(0, "one");
+            LL.Add(0, "zero");
+            Assert.AreEqual(2, LL.Size);
+            Assert.AreEqual("zero", LL.Get(0));
+            Assert.AreEqual("one", LL.Get(1));
+        }
+
+        [TestMethod()]
+        public void AddAtEndIndexTest() {
+            LL.Add("zero");
+            LL.Add(1, "one");
+            Assert.AreEqual(2, LL.Size);
+            Assert.AreEqual("zero", LL.Get(0));
+            Assert.AreEqual("one", LL.Get(1));
+        }
+
+        [TestMethod()]
         public void GetOutOfRangeTest() {
             LL.Add("zero");
             Exception exc = null;
@@ -244,6 +286,11 @@ namespace DataStructuresDoneWrong.LL.Tests {
         }
 
         [TestMethod()]
+        public void ContainsEmptyTest() {
+            Assert.IsFalse(LL.Contains("one"));
+        }
+
+        [TestMethod()]
         public void GetFirstEmptyTest() {
             Exception exc = null;
             try {
@@ -272,6 +319,37 @@ namespace DataStructuresDoneWrong.LL.Tests {
         }
 
         [TestMethod()]
+        public void RemoveFirstNotInListTest() {
+            Exception exc = null;
+            try {
+                LL.RemoveFirst();
+            } catch (Exception e) {
+                exc = e;
+            }
+            Assert.IsNotNull(exc, "Should throw exception for remove first on empty list");
+        }
+
+        [TestMethod()]
+        public void RemoveLastNotInListTest() {
+            Exception exc = null;
+            try {
+                LL.RemoveLast();
+            } catch (Exception e) {
+                exc = e;
+            }
+            Assert.IsNotNull(exc, "Should throw exception for remove last on empty list");
+        }
+
+        [TestMethod()]
+        public void RemoveLastIndexListTest() {
+            LL.Add("zero");
+            LL.Add("one");
+            LL.Add("two");
+            Assert.AreEqual("two", LL.Remove(2));
+            Assert.AreEqual(2, LL.Size);
+        }
+
+        [TestMethod()]
         public void SetNegativeIndexTest() {
             LL.Add("zero");
             Exception exc = null;
@@ -293,6 +371,18 @@ namespace DataStructuresDoneWrong.LL.Tests {
                 exc = e;
             }
             Assert.IsNotNull(exc, "Should throw exception for out of range index");
+        }
+
+        [TestMethod()]
+        public void ClearTest() {
+            Assert.IsTrue(LL.IsEmpty);
+            Assert.AreEqual(0, LL.Size);
+            LL.Add("zero");
+            Assert.IsFalse(LL.IsEmpty);
+            Assert.AreEqual(1, LL.Size);
+            LL.Clear();
+            Assert.IsTrue(LL.IsEmpty);
+            Assert.AreEqual(0, LL.Size);
         }
 
         [TestMethod()]
