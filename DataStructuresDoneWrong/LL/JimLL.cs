@@ -30,24 +30,22 @@ namespace DataStructuresDoneWrong.LL {
         }
 
         public void Add(T value) {
-            if (ListSize == 0) {
-                AddFirstValue(value);
-            } else {
-                AddAtEnd(value);
-            }
+            Add(ListSize, value);
         }
 
         public bool Add(int index, T value) {
             if (index < 0 || index > ListSize || value == null) {
-                return false;
+                throw new ArgumentException("index", string.Format("Index is out of range. Size = {0}, Add index = {1}", ListSize, index));
+            } else if (IsEmpty) {
+                AddFirstValue(value);
+            } else if (index == ListSize) {
+                AddAtEnd(value);
+            } else if (index == 0) {
+                AddAtFront(value);
             } else {
-                if (index == ListSize) {
-                    Add(value);
-                } else {
-                    AddInMiddle(index, value, Head);
-                }
-                return true;
+                AddInMiddle(index, value, Head);
             }
+            return true;
         }
 
         public void AddFirst(T value) {
@@ -65,8 +63,8 @@ namespace DataStructuresDoneWrong.LL {
         }
 
         public T Get(int index) {
-            if (index < 0 || index > ListSize) {
-                throw new ArgumentOutOfRangeException("index", "Index is out of range");
+            if (index < 0 || index >= ListSize) {
+                throw new ArgumentOutOfRangeException("index", string.Format("Index is out of range. Size = {0}, Get index = {1}", ListSize, index));
             } else {
                 return Get(Head, index);
             }
@@ -108,11 +106,17 @@ namespace DataStructuresDoneWrong.LL {
 
         public T Remove(int index) {
             if (index < 0 || index >= ListSize) {
-                throw new ArgumentOutOfRangeException("index", "Index is out of range");
-            } if (index == 0) {
-                return RemoveFirst();
+                throw new ArgumentOutOfRangeException("index", string.Format("Index is out of range. Size = {0}, Remove index = {1}", ListSize, index));
+            }
+
+            if (ListSize == 1) {
+                T value = Get(0);
+                Clear();
+                return value;
+            } else if (index == 0) {
+                return RemoveFirstValue();
             } else if(index == ListSize - 1) {
-                return RemoveLast();
+                return RemoveLastValue();
             } else {
                 ListSize--;
                 return Remove(index, Head);
@@ -120,33 +124,11 @@ namespace DataStructuresDoneWrong.LL {
         }
 
         public T RemoveFirst() {
-            T removed = Head.Value;
-            if (IsEmpty) {
-                throw new Exception("The list is already empty");
-            } else if (ListSize == 1) {
-                Head = null;
-                Tail = null;
-            } else {
-                Head = Head.Next;
-                Head.Prev = null;
-            }
-            ListSize--;
-            return removed;
+            return Remove(0);
         }
 
         public T RemoveLast() {
-            T removed = Tail.Value;
-            if (IsEmpty) {
-                throw new Exception("The list is already empty");
-            } else if (ListSize == 1) {
-                Head = null;
-                Tail = null;
-            } else {
-                Tail = Tail.Prev;
-                Tail.Next = null;
-            }
-            ListSize--;
-            return removed;
+            return Remove(ListSize - 1);
         }
 
         public T Set(int index, T value) {
@@ -164,19 +146,24 @@ namespace DataStructuresDoneWrong.LL {
         }
 
         public object Clone() {
-            throw new NotImplementedException();
+            return AddAllCloned(Head, new JimLL<T>());
         }
 
         private void AddFirstValue(T value) {
             Head = new Node(value);
             Tail = Head;
-            Head.Next = Tail;
-            Tail.Prev = Head;
             ListSize = 1;
         }
 
         private void AddAtEnd(T value) {
-            Tail = new Node(Tail.Prev, value);
+            Tail = new Node(Tail, value);
+            Tail.Prev.Next = Tail;
+            ListSize++;
+        }
+
+        private void AddAtFront(T value) {
+            Head = new Node(value, Head);
+            Head.Next.Prev = Head;
             ListSize++;
         }
 
@@ -203,7 +190,7 @@ namespace DataStructuresDoneWrong.LL {
 
         private void ToArray(T[] listArray, Node cur, int index) {
             if (cur != null) {
-                listArray[index] = cur.Value;
+                listArray[index] = (T)cur.Value.Clone();
                 ToArray(listArray, cur.Next, index + 1);
             }
         }
@@ -224,7 +211,7 @@ namespace DataStructuresDoneWrong.LL {
             } else if (cur.Value.Equals(value)) {
                 return index;
             } else {
-                return IndexOf(value, cur.Prev, index - 1);
+                return LastIndexOf(value, cur.Prev, index - 1);
             }
         }
 
@@ -232,7 +219,7 @@ namespace DataStructuresDoneWrong.LL {
             if (index == 0) {
                 return cur.Value;
             } else {
-                return Get(cur.Next, index + 1);
+                return Get(cur.Next, index - 1);
             }
         }
 
@@ -242,17 +229,42 @@ namespace DataStructuresDoneWrong.LL {
                 cur.Value = value;
                 return oldValue;
             } else {
-                return Set(index + 1, value, cur.Next);
+                return Set(index - 1, value, cur.Next);
             }
         }
 
         private T Remove(int index, Node cur) {
             if (index == 0) {
-                cur.Prev = cur.Next;
-                cur.Next = cur.Prev;
+                cur.Prev.Next = cur.Next;
+                cur.Next.Prev = cur.Prev;
                 return cur.Value;
             } else {
                 return Remove(index - 1, cur.Next);
+            }
+        }
+
+        private T RemoveFirstValue() {
+            T removed = Head.Value;
+            Head = Head.Next;
+            Head.Prev = null;
+            ListSize--;
+            return removed;
+        }
+
+        private T RemoveLastValue() {
+            T removed = Tail.Value;
+            Tail = Tail.Prev;
+            Tail.Next = null;
+            ListSize--;
+            return removed;
+        }
+
+        private JimLL<T> AddAllCloned(Node cur, JimLL<T> clone) {
+            if (cur == null) {
+                return clone;
+            } else {
+                clone.Add((T) cur.Value.Clone());
+                return AddAllCloned(cur.Next, clone);
             }
         }
 
@@ -263,6 +275,8 @@ namespace DataStructuresDoneWrong.LL {
             public Node(T value) : this(null, value, null) { }
 
             public Node(Node prev, T value) : this(prev, value, null) { }
+
+            public Node(T value, Node next) : this(null, value, next) { }
 
             public Node(Node prev, T value, Node next) {
                 PrevNode = prev;
