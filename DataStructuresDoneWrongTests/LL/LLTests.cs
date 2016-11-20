@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace DataStructuresDoneWrong.LL.Tests {
 
+    // ********
+    // In order to test your LL class, change the lines in the constructor below to use your class.
+    // ********
     [TestClass()]
     public class LLTests {
 
@@ -15,7 +18,9 @@ namespace DataStructuresDoneWrong.LL.Tests {
         private BadLinkedList<MutableTest> LLM;
 
         public LLTests() {
+            // Change to "new YourClassLL<string>();" in order to test your code
             LL = new JimLL<string>();
+            // Change to "new YourClassLL<MutableTest>();" in order to test your code
             LLM = new JimLL<MutableTest>();
         }
 
