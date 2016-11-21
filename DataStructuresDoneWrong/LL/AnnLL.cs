@@ -12,7 +12,7 @@ namespace DataStructuresDoneWrong.LL
         {
             private Node previousNode;
             private Node nextNode;
-            private T nodeValue; 
+            private T nodeValue;
 
             public Node PreviousNode
             {
@@ -24,11 +24,11 @@ namespace DataStructuresDoneWrong.LL
                 get { return nextNode; }
                 set { nextNode = value; }
             }
-            public T NodeValue 
+            public T NodeValue
             {
                 get { return nodeValue; }
                 set { nodeValue = value; }
-            }         
+            }
 
             public Node(T value, Node prev, Node next)
             {
@@ -40,7 +40,7 @@ namespace DataStructuresDoneWrong.LL
 
         public bool IsEmpty
         {
-            get { return (LLSize==0; }
+            get { return LLSize == 0; }
         }
 
         public int Size
@@ -50,16 +50,17 @@ namespace DataStructuresDoneWrong.LL
 
         public void Add(T value)
         {
-            Node tempNode = Tail; 
+            Node tempNode = Tail;
             Tail = new Node(value, tempNode, null);
-            
-            if (LLSize == 0){
+
+            if (LLSize == 0)
+            {
                 Head = Tail;
             }
-            else{
-                tempNode.NextNodes = Tail;
+            else
+            {
+                tempNode.NextNode = Tail;
             }
-
             LLSize++;
         }
 
@@ -67,14 +68,12 @@ namespace DataStructuresDoneWrong.LL
         {
             if (index < 0 || index > LLSize)
                 return false;
-
             if (index == 0)
                 AddFirst(value);
             else if (index == LLSize)
                 Add(value);
             else
             {
-
                 //todo: if index >= LLSize/2, start from tail, else start from head
                 Node tempNode = Head;
 
@@ -84,9 +83,9 @@ namespace DataStructuresDoneWrong.LL
                 }
                 tempNode.PreviousNode.NextNode = new Node(value, tempNode.PreviousNode, tempNode);
                 tempNode.PreviousNode = tempNode.PreviousNode.NextNode;
+                LLSize++;
             }
-
-            LLSize++;
+            
             return true;
         }
 
@@ -94,27 +93,29 @@ namespace DataStructuresDoneWrong.LL
         {
             Node tempNode = Head;
             Head = new Node(value, null, tempNode);
- 
-            if (LLSize == 0){
+
+            if (LLSize == 0)
+            {
                 Tail = Head;
             }
-            else{
+            else
+            {
                 tempNode.PreviousNode = Head;
             }
             LLSize++;
         }
-        
+
         public void Clear()
         {
-        //Some C# black magic:
+            //Some C# black magic:
             Head = null;
             Tail = null;
-            LLSize = 0;         
+            LLSize = 0;
         }
 
         public object Clone()
         {
-            AnnLL<T> Dolly = new AnnLL<T>();           
+            AnnLL<T> Dolly = new AnnLL<T>();
 
             for (int i = 0; i < this.LLSize; i++)
             {
@@ -129,18 +130,17 @@ namespace DataStructuresDoneWrong.LL
         {
             if (this.IsEmpty)
                 return false;
-            bool found = false;
+
             Node tempNode = Head;
-            while (!found && tempNode != null) 
+            while (tempNode != null)
             {
                 if (tempNode.NodeValue.Equals(value))
                 {
-                    found = true;
+                    return true;
                 }
-
                 tempNode = tempNode.NextNode;
             }
-            return found;
+            return false;
         }
 
         public T Get(int index)
@@ -162,7 +162,7 @@ namespace DataStructuresDoneWrong.LL
 
         public T GetFirst()
         {
-             if (this.IsEmpty)
+            if (this.IsEmpty)
             {
                 throw (new Exception("LL is Empty"));
             }
@@ -171,7 +171,7 @@ namespace DataStructuresDoneWrong.LL
 
         public T GetLast()
         {
-             if (this.IsEmpty)
+            if (this.IsEmpty)
             {
                 throw (new Exception("LL is Empty"));
             }
@@ -186,11 +186,11 @@ namespace DataStructuresDoneWrong.LL
             int index = -1;
             Node tempNode = Head;
 
-            while (!found && tempNode.NextNode != null) 
-            {              
+            while (!found && tempNode.NextNode != null)
+            {
                 if (tempNode.NodeValue.Equals(value))
                 {
-                    found = true;    
+                    found = true;
                 }
                 index++;
                 tempNode = tempNode.NextNode;
@@ -226,7 +226,7 @@ namespace DataStructuresDoneWrong.LL
         public bool Remove(T value)
         {
             int index = IndexOf(value);
-            if (index != -1) //just in case I am dumb 
+            if (index != -1)
             {
                 Remove(index);
                 return true;
@@ -256,9 +256,10 @@ namespace DataStructuresDoneWrong.LL
                 tempValue = tempNode.NodeValue;
 
                 tempNode.PreviousNode.NextNode = tempNode.NextNode;
-                tempNode.NextNode.PreviousNode = tempNode.PreviousNode;
+
+                LLSize--;
             }
-            LLSize--;
+            
             return tempValue;
         }
 
@@ -269,23 +270,47 @@ namespace DataStructuresDoneWrong.LL
                 throw (new Exception("Linked List is Empty sad"));
             }
             T tempVal = Head.NodeValue;
-            Head = Head.NextNode;
-            Head.PreviousNode = null;
-            LLSize--; 
+            if (LLSize == 1)
+            {
+                this.Clear();
+            }
+            else
+            {
+                Head = Head.NextNode;
+                Head.PreviousNode = null;
+
+                if (LLSize == 2)
+                {
+                    Tail = Head;
+                }
+                LLSize--;
+            }
             return tempVal;
         }
-        //add case for 
+
         public T RemoveLast()
         {
             if (this.IsEmpty)
             {
                 throw (new Exception("Linked List is Empty sad"));
             }
-
             T tempVal = Tail.NodeValue;
-            Tail.PreviousNode.NextNode = null;
-            Tail = Tail.PreviousNode;
-            LLSize--;
+            if (LLSize == 1)
+            {
+                this.Clear();
+            }
+
+            else
+            {
+                Tail.PreviousNode.NextNode = null;
+                Tail = Tail.PreviousNode;
+                if (LLSize == 2)
+                {
+                    Head = Tail;
+                }
+                LLSize--;
+            }
+            
             return tempVal;
         }
 
@@ -304,19 +329,27 @@ namespace DataStructuresDoneWrong.LL
 
             return tempNode.NodeValue;
         }
-            T tempArray[LLSize]; //NO IDEA HOW TO DECLARE ARRAY in c#
-             
+
+        public T[] ToArray()
+        {
+            T[] tempArray = null;
+            if (!IsEmpty)
+            {
+                tempArray = new T[LLSize];
+                Node tempNode = Head;
+                for (int i = 0; i < LLSize; i++)
+                {
+                    tempArray[i] = (T)tempNode.NodeValue.Clone();
+                    tempNode = tempNode.NextNode;
+                }
+            }
+            return tempArray;      
         }
 
         private bool ValidExistingIndex(int index)
         {
-            if (index < 0 || index > LLSize - 1)
-                return false;
-            else
-                return true;
+            return (index >= 0 && index <= LLSize - 1);
 
-           
         }
     }
 }
-
