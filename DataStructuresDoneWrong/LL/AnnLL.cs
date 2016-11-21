@@ -40,7 +40,7 @@ namespace DataStructuresDoneWrong.LL
 
         public bool IsEmpty
         {
-            get { return (Head == null); }
+            get { return (LLSize==0; }
         }
 
         public int Size
@@ -50,8 +50,16 @@ namespace DataStructuresDoneWrong.LL
 
         public void Add(T value)
         {
-            Node tempNode = Tail;
+            Node tempNode = Tail; 
             Tail = new Node(value, tempNode, null);
+            
+            if (LLSize == 0){
+                Head = Tail;
+            }
+            else{
+                tempNode.NextNodes = Tail;
+            }
+
             LLSize++;
         }
 
@@ -85,8 +93,14 @@ namespace DataStructuresDoneWrong.LL
         public void AddFirst(T value)
         {
             Node tempNode = Head;
-            Head = new Node(value, null, tempNode.NextNode);
-            tempNode.NextNode.PreviousNode = Head;
+            Head = new Node(value, null, tempNode);
+ 
+            if (LLSize == 0){
+                Tail = Head;
+            }
+            else{
+                tempNode.PreviousNode = Head;
+            }
             LLSize++;
         }
         
@@ -148,11 +162,19 @@ namespace DataStructuresDoneWrong.LL
 
         public T GetFirst()
         {
+             if (this.IsEmpty)
+            {
+                throw (new Exception("LL is Empty"));
+            }
             return Head.NodeValue;
         }
 
         public T GetLast()
         {
+             if (this.IsEmpty)
+            {
+                throw (new Exception("LL is Empty"));
+            }
             return Tail.NodeValue;
         }
 
