@@ -252,7 +252,7 @@ namespace DataStructuresDoneWrong.LL
             LLSize--; 
             return tempVal;
         }
-
+        //add case for 
         public T RemoveLast()
         {
             if (this.IsEmpty)
@@ -282,10 +282,6 @@ namespace DataStructuresDoneWrong.LL
 
             return tempNode.NodeValue;
         }
-
-        public T[] ToArray()
-        {
-            //todo: figure out how to declare an array in C#, too lazy right now
             T tempArray[LLSize]; //NO IDEA HOW TO DECLARE ARRAY in c#
              
         }
