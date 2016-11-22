@@ -85,7 +85,7 @@ namespace DataStructuresDoneWrong.LL
                 tempNode.PreviousNode = tempNode.PreviousNode.NextNode;
                 LLSize++;
             }
-            
+
             return true;
         }
 
@@ -186,7 +186,7 @@ namespace DataStructuresDoneWrong.LL
             int index = -1;
             Node tempNode = Head;
 
-            while (!found && tempNode.NextNode != null)
+            while (!found && tempNode != null)
             {
                 if (tempNode.NodeValue.Equals(value))
                 {
@@ -256,10 +256,11 @@ namespace DataStructuresDoneWrong.LL
                 tempValue = tempNode.NodeValue;
 
                 tempNode.PreviousNode.NextNode = tempNode.NextNode;
+                tempNode.NextNode.PreviousNode = tempNode.PreviousNode; 
 
                 LLSize--;
             }
-            
+
             return tempValue;
         }
 
@@ -310,7 +311,7 @@ namespace DataStructuresDoneWrong.LL
                 }
                 LLSize--;
             }
-            
+
             return tempVal;
         }
 
@@ -332,18 +333,16 @@ namespace DataStructuresDoneWrong.LL
 
         public T[] ToArray()
         {
-            T[] tempArray = null;
-            if (!IsEmpty)
+
+            T[] tempArray = new T[LLSize];
+            Node tempNode = Head;
+            for (int i = 0; i < LLSize; i++)
             {
-                tempArray = new T[LLSize];
-                Node tempNode = Head;
-                for (int i = 0; i < LLSize; i++)
-                {
-                    tempArray[i] = (T)tempNode.NodeValue.Clone();
-                    tempNode = tempNode.NextNode;
-                }
+                tempArray[i] = (T)tempNode.NodeValue.Clone();
+                tempNode = tempNode.NextNode;
             }
-            return tempArray;      
+
+            return tempArray;
         }
 
         private bool ValidExistingIndex(int index)

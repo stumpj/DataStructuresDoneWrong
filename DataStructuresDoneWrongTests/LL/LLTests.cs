@@ -222,13 +222,7 @@ namespace DataStructuresDoneWrong.LL.Tests {
         [TestMethod()]
         public void AddOutOfRangeTest() {
             LL.Add("zero");
-            Exception exc = null;
-            try {
-                LL.Add(2, "two");
-            } catch (Exception e) {
-                exc = e;
-            }
-            Assert.IsNotNull(exc, "Should throw exception for out of range index");
+            Assert.IsFalse(LL.Add(2, "two"));        
         }
 
         [TestMethod()]
