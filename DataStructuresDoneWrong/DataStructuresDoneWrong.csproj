@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AVLTree\AVLTree.cs" />
     <Compile Include="Launchpad.cs" />
     <Compile Include="LL\AnnLL.cs" />
     <Compile Include="LL\BadLinkedList.cs" />
